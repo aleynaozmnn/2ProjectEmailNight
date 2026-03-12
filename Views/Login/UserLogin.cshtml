@@ -1,0 +1,121 @@
+﻿@model Project2_EmailNight.Dtos.UserLoginDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Wispotter Email - Giriş Yap</title>
+
+    <link rel="stylesheet" href="~/Templates/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Templates/css/icons.css" />
+    <link rel="stylesheet" href="~/Templates/css/app.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @@keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Arka planla resmin yumuşak kaynaşması için */
+        .illustration-img {
+            max-width: 400px;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
+            mix-blend-mode: multiply;
+        }
+
+        .bg-login-gradient {
+            background: linear-gradient(45deg, #8833ff, #e1cfff);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+
+<body class="bg-login">
+    <div class="wrapper">
+        <div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
+            <div class="container-fluid">
+                <div class="row row-cols-1 row-cols-lg-2">
+
+                    @* SOL PANEL: RESİM VE HOŞGELDİN METNİ *@
+                    <div class="col mx-auto d-none d-lg-flex align-items-center justify-content-center bg-login-gradient">
+                        <div class="text-center p-5">
+                            <div class="mb-4 animate-float">
+                                <img src="https://img.freepik.com/free-vector/envelope-with-paper-plane-concept-illustration_114360-3162.jpg"
+                                     alt="Login Illustration"
+                                     class="img-fluid illustration-img">
+                            </div>
+                            <h2 class="text-white fw-bold mt-4">Wispotter Maile Hoşgeldiniz</h2>
+                            <p class="text-white-50 fs-5">Hızlı, güvenli ve modern e-posta deneyimini keşfedin.</p>
+                        </div>
+                    </div>
+
+                    @* SAĞ PANEL: GİRİŞ FORMU *@
+                    <div class="col mx-auto d-flex align-items-center justify-content-center">
+                        <div class="card shadow-none bg-transparent w-100 p-lg-5">
+                            <div class="card-body p-md-5">
+                                <div class="text-center mb-4">
+                                    <img src="~/Templates/images/logo-img.png" width="180" alt="Logo" />
+                                </div>
+                                <div class="p-4 rounded border shadow-sm bg-white">
+                                    <div class="text-center">
+                                        <h3 class="fw-bold">Giriş Yap</h3>
+                                        <p class="text-muted">Hesabınız yok mu? <a href="/Register/CreateUser" class="text-primary fw-bold">Hemen Kayıt Olun</a></p>
+                                    </div>
+                                    <hr />
+
+                                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                                    <form class="row g-3" method="post">
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold text-dark">Kullanıcı Adınız</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-transparent"><i class='bx bx-user'></i></span>
+                                                <input type="text" asp-for="UserName" class="form-control border-start-0" placeholder="Kullanıcı adınızı girin">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold text-dark">Şifreniz</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-transparent"><i class='bx bx-lock-alt'></i></span>
+                                                <input type="password" asp-for="Password" class="form-control border-start-0" placeholder="Şifrenizi girin">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-4">
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary shadow-sm" style="background: #8833ff; border:none;">
+                                                    <i class="bx bxs-lock-open me-2"></i>Giriş Yap
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* FORM BİTİŞ *@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

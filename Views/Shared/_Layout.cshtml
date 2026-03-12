@@ -1,0 +1,233 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    string IsActive(string controller, string action)
+    {
+        return currentController == controller && currentAction == action ? "active-menu" : "";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Wispotter</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7f8fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            border-right: 1px solid #ececec;
+            padding: 24px 14px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+            .brand i {
+                font-size: 30px;
+                color: #8833ff;
+            }
+
+            .brand span {
+                font-size: 22px;
+                font-weight: 700;
+                color: #222;
+            }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9aa0a6;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 20px 10px 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            .sidebar-menu li {
+                margin-bottom: 8px;
+            }
+
+            .sidebar-menu a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 14px;
+                border-radius: 12px;
+                text-decoration: none;
+                color: #5f6368;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+
+                .sidebar-menu a:hover {
+                    background-color: #f3edff;
+                    color: #8833ff;
+                }
+
+                .sidebar-menu a i {
+                    font-size: 20px;
+                }
+
+        .active-menu {
+            background: linear-gradient(90deg, #7b2ff7, #9b4dff);
+            color: #fff !important;
+            box-shadow: 0 6px 15px rgba(136, 51, 255, 0.20);
+        }
+
+            .active-menu i {
+                color: #fff !important;
+            }
+
+        .new-message-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            background: linear-gradient(90deg, #7b2ff7, #9b4dff);
+            color: #fff !important;
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            transition: 0.2s ease;
+        }
+
+            .new-message-btn:hover {
+                transform: translateY(-2px);
+                color: white !important;
+            }
+
+        .main-content {
+            flex: 1;
+            padding: 24px;
+        }
+
+        @@media (max-width: 992px) {
+            .sidebar {
+                width: 90px;
+            }
+
+            .brand span,
+            .sidebar-menu a span,
+            .menu-title,
+            .new-message-btn span {
+                display: none;
+            }
+
+            .sidebar-menu a,
+            .new-message-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <div class="brand">
+                <i class='bx bxs-leaf'></i>
+                <span>Wispotter</span>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a asp-controller="Message" asp-action="Inbox" class="@IsActive("Message", "Inbox")">
+                        <i class='bx bx-inbox'></i>
+                        <span>Gelen Kutusu</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Message" asp-action="StarredMessages" class="@IsActive("Message", "StarredMessages")">
+                        <i class='bx bx-star'></i>
+                        <span>Yıldızlılar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Message" asp-action="SentMessages" class="@IsActive("Message", "SentMessages")">
+                        <i class='bx bx-send'></i>
+                        <span>Gidenler</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Message" asp-action="DraftMessage" class="@IsActive("Message", "DraftMessage")">
+                        <i class='bx bx-file'></i>
+                        <span>Taslaklar</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="menu-title">Eylemler</div>
+
+            <a asp-controller="Message" asp-action="CreateMessage" class="new-message-btn">
+                <i class='bx bx-plus-circle'></i>
+                <span>Yeni Mesaj</span>
+            </a>
+
+            <div class="menu-title">Kullanıcı Paneli</div>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a asp-controller="Profile" asp-action="Dashboard">
+                        <i class='bx bx-bar-chart-alt-2'></i>
+                        <span>İstatistiklerim</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Profile" asp-action="Index">
+                        <i class='bx bx-user-circle'></i>
+                        <span>Profilim</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

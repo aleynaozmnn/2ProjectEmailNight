@@ -1,0 +1,133 @@
+﻿@model List<Project2_EmailNight.Entities.Message>
+
+@{
+    ViewData["Title"] = "Giden Mesajlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* PERFORMANS VE EFEKT AYARLARI */
+    .message-row {
+        will-change: transform, background-color;
+        backface-visibility: hidden;
+        transition: background-color 0.15s ease-out, transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+        .message-row:hover {
+            background-color: #fcfaff !important; /* Çok hafif mor/beyaz tonu */
+            transform: scale(1.005);
+            box-shadow: 0 4px 15px rgba(136, 51, 255, 0.08); /* Mor odaklı hafif gölge */
+            z-index: 5;
+            position: relative;
+        }
+
+    /* Sayfaya Özel Renkler */
+    .bg-light-purple {
+        background-color: #f0e6ff;
+    }
+
+    .text-purple {
+        color: #8833ff;
+    }
+
+    .border-purple {
+        border-color: #dccaff !important;
+    }
+
+    /* Buton Tasarımları */
+    .btn-action {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    /* Scrollbar Tasarımı */
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #dccaff;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="card shadow-sm border-0" style="border-radius: 15px; border-top: 4px solid #8833ff !important;">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="mb-0 text-purple fw-bold">
+                    <i class='bx bx-paper-plane me-2'></i>Giden Mesajlar
+                </h5>
+                <p class="text-muted small mb-0">Gönderdiğiniz tüm e-postaların geçmişi.</p>
+            </div>
+            <span class="badge rounded-pill bg-light text-purple border border-purple px-3">
+                Toplam: @Model.Count
+            </span>
+        </div>
+
+        <hr class="opacity-75" />
+
+        <div class="table-responsive">
+            @* Border-spacing ile satırların birbirini ezmesini engelliyoruz *@
+            <table class="table table-hover align-middle mb-0" style="border-collapse: separate; border-spacing: 0 5px;">
+                <thead>
+                    <tr>
+                        <th class="ps-3" style="width: 50px; color: #6c757d; font-weight: 600; border: none;">#</th>
+                        <th style="width: 50px; border: none;"></th>
+                        <th style="color: #6c757d; font-weight: 600; border: none;">Alıcı</th>
+                        <th style="color: #6c757d; font-weight: 600; border: none;">Konu</th>
+                        <th style="color: #6c757d; font-weight: 600; border: none;">Tarih</th>
+                        <th class="text-end pe-3" style="color: #6c757d; font-weight: 600; border: none; width: 120px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="message-row">
+                            <td class="ps-3 text-muted" style="font-size: 0.85rem;">@item.MessageId</td>
+                            <td>
+                                <a asp-controller="Message" asp-action="ChangeStarStatus" asp-route-id="@item.MessageId">
+                                    <i class='bx @(item.IsStarred ? "bxs-star text-warning" : "bx-star text-muted")' style="font-size: 1.1rem;"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-2 bg-light-purple text-purple rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 0.8rem; font-weight: bold;">
+                                        @(item.ReceiverEmail.Substring(0, 1).ToUpper())
+                                    </div>
+                                    <span class="fw-medium text-dark">@item.ReceiverEmail</span>
+                                </div>
+                            </td>
+                            <td><span class="text-dark">@item.Subject</span></td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="small text-dark fw-bold">@item.SendDate.ToString("dd MMM yyyy")</span>
+                                    <span class="text-muted" style="font-size: 0.7rem;">@item.SendDate.ToString("HH:mm")</span>
+                                </div>
+                            </td>
+                            <td class="text-end pe-3">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/Message/MessageDetail/@item.MessageId" class="btn btn-primary btn-action shadow-sm" title="Görüntüle">
+                                        <i class='bx bx-envelope-open'></i>
+                                    </a>
+                                    <a href="/Message/DeleteMessage/@item.MessageId"
+                                       onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?')"
+                                       class="btn btn-outline-danger btn-action" title="Sil">
+                                        <i class='bx bx-trash'></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

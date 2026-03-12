@@ -1,0 +1,108 @@
+﻿<style>
+    /* PERFORMANS VE DONMA ENGELLEYİCİ AYARLAR */
+    .message-row {
+        /* Tarayıcıya bu öğelerin değişeceğini önceden bildiriyoruz (Donanım Hızlandırma) */
+        will-change: transform, background-color;
+        backface-visibility: hidden;
+        /* Sadece gerekli özellikleri, daha hızlı bir sürede değiştiriyoruz */
+        transition: background-color 0.15s ease-out, transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+
+        .message-row:hover {
+            background-color: #f8f9fa !important;
+            /* Scale değerini 1.01'den 1.005'e çekmek titremeyi ve donmayı azaltır */
+            transform: scale(1.005);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 10; /* Üste çıkmasını sağlar */
+            position: relative;
+        }
+
+    /* Butonlar için sabit boyutlar */
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+    /* Slider (Scrollbar) Akıcılığı İçin */
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #ced4da;
+        border-radius: 10px;
+    }
+    .unread-style {
+        background-color: rgba(136, 51, 255, 0.04) !important; /* Hafif mor arka plan */
+    }
+
+    .unread-style:hover {
+        background-color: rgba(136, 51, 255, 0.08) !important;
+    }
+</style>
+@* Kartın üstüne 4px kalınlığında mor çizgi ekleyen stil eklendi *@
+<div class="card shadow-sm border-0" style="border-radius: 15px; border-top: 4px solid #8833ff !important;">
+<div class="card radius-15 border-0 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+            <h5 class="mb-0 fw-bold text-primary"><i class='bx bx-envelope me-2'></i>Gelen Mesajlar</h5>
+        </div>
+        <div class="table-responsive">
+            @* Border-separate kullanarak satırların birbirini ezmesini engelliyoruz *@
+            <table class="table table-hover align-middle" style="border-collapse: separate; border-spacing: 0 4px;">
+                <thead class="table-light">
+                    <tr>
+                        <th style="border:none;">Gönderici</th>
+                        <th style="border:none;">Konu</th>
+                        <th style="border:none;">Tarih</th>
+                        <th style="border:none;" class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                            <tr class="message-row @(item.IsRead ? "" : "unread-style")">
+                                <td>
+                                    @item.SenderEmail
+                                    @if (item.IsRead)
+                                    {
+                                        <span class="badge bg-light text-success ms-2" style="font-size: 10px;">
+                                            <i class='bx bx-check-double'></i> Okundu
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-primary ms-2" style="font-size: 10px;">YENİ</span>
+                                    }
+                                </td>
+                            <td><span class="text-secondary">@item.Subject</span></td>
+                            <td><small class="text-muted">@item.SendDate.ToString("dd MMM yyyy")</small></td>
+                            <td class="text-end">
+                                <a href="/Message/MessageDetail/@item.MessageId" class="btn btn-primary btn-action shadow-sm">
+                                    <i class='bx bx-envelope-open'></i>
+                                </a>
+                                <a href="/Message/DeleteMessage/@item.MessageId"
+                                   onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?')"
+                                   class="btn btn-outline-danger btn-action ms-1">
+                                    <i class='bx bx-trash'></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

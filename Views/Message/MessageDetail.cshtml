@@ -1,0 +1,41 @@
+﻿@model Project2_EmailNight.Entities.Message
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow-lg border-0 radius-15">
+    <div class="card-body p-4">
+        @* Mesaj Konusu *@
+        <h3 class="fw-bold text-dark mb-4">@Model.Subject</h3>
+
+        <div class="d-flex align-items-center mb-4">
+            @* Profil Resmi *@
+            <img src="@ViewBag.SenderImage" class="rounded-circle shadow-sm me-3" width="50" height="50" onerror="this.src='/UserImages/default.jpg'">
+
+            <div>
+                <h6 class="mb-0 fw-bold">@Model.SenderEmail</h6>
+                <small class="text-muted">Alıcı: @Model.ReceiverEmail | @Model.SendDate.ToString("g")</small>
+            </div>
+            <div class="ms-auto">
+                @* Category alanı boşsa hata vermemesi için kontrol *@
+                <span class="badge bg-light text-primary px-3 py-2 radius-30">@(Model.Category ?? "Genel")</span>
+            </div>
+        </div>
+
+        @* Mesaj İçeriği - Senin modelinde adı MessageDetail *@
+        <div class="message-content p-4 bg-light radius-15 mb-4" style="min-height: 200px; border-left: 4px solid #8833ff;">
+            @Html.Raw(Model.MessageDetail)
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                <i class='bx bx-arrow-back me-1'></i> Geri Dön
+            </a>
+
+            <a href="/Message/CreateMessage?receiver=@Model.SenderEmail&subject=Re: @Model.Subject" class="btn btn-primary">
+                <i class='bx bx-reply me-1'></i> Yanıtla
+            </a>
+        </div>
+    </div>
+</div>

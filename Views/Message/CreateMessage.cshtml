@@ -1,0 +1,217 @@
+﻿@model Project2_EmailNight.Entities.Message
+@{
+    ViewData["Title"] = ViewBag.PageTitle;
+}
+
+@* Üstte mor şerit olan ana taşıyıcı kart *@
+<div class="card shadow-sm border-0" style="border-radius: 15px; border-top: 4px solid #8833ff !important; overflow: hidden;">
+    <div class="card-body p-5">
+
+        @* Başlık Bölümü *@
+        <div class="d-flex align-items-center mb-4 pb-3 border-bottom animate-fade-in">
+            <div class="widgets-icons-2 rounded-circle bg-gradient-violet text-white me-3 shadow-sm">
+                <i class='bx bxs-paper-plane'></i>
+            </div>
+            <div>
+                <h3 class="mb-0 fw-bold text-dark">@ViewBag.PageTitle</h3>
+                <p class="mb-0 text-muted">Mesajınızı özelleştirip hızlıca iletin.</p>
+            </div>
+        </div>
+
+        <form asp-action="CreateMessage" method="post" class="row g-4">
+            <input type="hidden" asp-for="MessageId" />
+            @* Bilgi Notu (Eğer bir yanıtlama/iletme işlemiyse) *@
+            @if (Model != null && !string.IsNullOrEmpty(Model.Subject))
+            {
+                <div class="col-12">
+                    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center pulse-animation" style="background: #f0eaff; color: #6a11cb; border-radius: 12px;">
+                        <i class='bx bx-info-circle me-2 fs-4'></i>
+                        <span>Şu konu üzerinde işlem yapıyorsunuz: <strong>@Model.Subject</strong></span>
+                    </div>
+                </div>
+            }
+
+            @* Alıcı Girişi *@
+            <div class="col-md-6">
+                <label class="form-label fw-semibold text-dark">Alıcı E-posta</label>
+                <div class="input-group custom-input-group transition-all">
+                    <span class="input-group-text bg-light border-end-0 transition-all">
+                        <i class='bx bx-envelope text-primary'></i>
+                    </span>
+                    <input type="email" asp-for="ReceiverEmail" class="form-control border-start-0 bg-light transition-all" placeholder="alıcı@mail.com" required />
+                </div>
+            </div>
+
+            @* Kategori Seçimi *@
+            <div class="col-md-6">
+                <label class="form-label fw-semibold text-dark">Kategori</label>
+                <select asp-for="Category" class="form-select bg-light transition-all">
+                    @if (ViewBag.CategoryList != null)
+                    {
+                        @foreach (var item in (List<Project2_EmailNight.Entities.Category>)ViewBag.CategoryList)
+                        {
+                            bool isSelected = Model?.Category == item.CategoryName;
+                            <option value="@item.CategoryName" selected="@(isSelected ? "selected" : null)">
+                                @item.CategoryName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            @* Konu Girişi *@
+            <div class="col-12">
+                <label class="form-label fw-semibold text-dark">Konu</label>
+                <input type="text" asp-for="Subject" class="form-control bg-light transition-all" placeholder="Mesaj konusu..." />
+            </div>
+
+            @* İçerik (CKEditor) *@
+            <div class="col-12">
+                <label class="form-label fw-semibold text-dark">Mesaj İçeriği</label>
+                <div class="editor-container transition-all">
+                    <textarea asp-for="MessageDetail" class="form-control" id="editor1"></textarea>
+                </div>
+            </div>
+
+            @* Alt Butonlar *@
+            <div class="col-12 pt-3">
+                <div class="d-flex justify-content-end align-items-center gap-3">
+
+                    @* Taslak Butonu *@
+                    <button type="submit" asp-action="SaveDraft" class="btn btn-outline-secondary px-4 btn-hover-draft" style="border-radius: 10px; height: 45px; font-weight: 500; transition: all 0.3s ease;">
+                        <i class='bx bx-archive-in me-1'></i> Taslak Olarak Kaydet
+                    </button>
+
+                    @* Gönder Butonu *@
+                    <button type="submit" class="btn btn-primary px-5 shadow-sm btn-send-custom" style="border-radius: 10px; height: 45px; font-weight: 600; min-width: 160px;">
+                        <i class='bx bx-send me-1'></i> Maili Gönder
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* 1. RENK VE GRADYAN TANIMLARI */
+    .bg-gradient-violet {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+    }
+
+    .transition-all {
+        transition: all 0.25s ease-in-out !important;
+    }
+
+    /* 2. INPUT VE SELECT EFEKTLERİ */
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        background-color: #fcfcfc !important;
+    }
+
+        /* Üzerine gelince (Hover) */
+        .form-control:hover, .form-select:hover {
+            border-color: #cbd5e1;
+            background-color: #fff !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Tıklayınca / Odaklanınca (Focus) */
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.12);
+            border-color: #6a11cb;
+            background-color: #fff !important;
+            transform: translateY(-1px); /* Hafif yükselme */
+        }
+
+    /* 3. INPUT GROUP İKON EFEKTİ */
+    .custom-input-group:focus-within .input-group-text {
+        color: #6a11cb !important;
+        background-color: #f0eaff !important;
+        border-color: #6a11cb;
+    }
+
+    .custom-input-group:hover .input-group-text {
+        background-color: #f0eaff;
+    }
+
+    /* 4. BUTON EFEKTLERİ */
+    .btn-send-custom {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border: none;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+        .btn-send-custom:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.35);
+            filter: brightness(1.1);
+        }
+
+    .btn-hover-draft:hover {
+        background-color: #f8f9fa;
+        color: #6a11cb;
+        border-color: #6a11cb;
+        transform: translateY(-2px);
+    }
+
+    /* 5. ANİMASYONLAR */
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(106, 17, 203, 0.2);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(106, 17, 203, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(106, 17, 203, 0);
+        }
+    }
+
+    /* CKEditor Konteyner */
+    .editor-container:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border-radius: 12px;
+    }
+</style>
+
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    // CKEditor'ü başlat
+    var editor = CKEDITOR.replace('editor1', { // textarea ID'si 'editor1' olduğu için burayı düzelttik
+        height: 300,
+        removeButtons: 'PasteFromWord'
+    });
+
+    // Form gönderilmeden önce (ister "Gönder" ister "Taslağa Kaydet")
+    // CKEditor içindeki veriyi textarea'ya senkronize etmesini sağlıyoruz.
+    document.querySelector('form').onsubmit = function() {
+        for (var instance in CKEDITOR.instances) {
+            CKEDITOR.instances[instance].updateElement();
+        }
+    };
+</script>

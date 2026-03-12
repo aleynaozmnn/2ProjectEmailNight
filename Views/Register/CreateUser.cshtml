@@ -1,0 +1,108 @@
+﻿@model Project2_EmailNight.Dtos.UserRegisterDto
+@{
+    Layout = null;
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+<html lang="en"><!--Bu sayfa çevrilsin mi? amacıyla-->
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Wispotter Email - Bootstrap4 Admin Template</title>
+    <!--favicon-->
+    <link rel="icon" href="~/Templates/images/favicon-32x32.png" type="image/png" />
+    <!-- loader-->
+    <link href="~/Templates/css/pace.min.css" rel="stylesheet" />
+    <script src="~/Templates/js/pace.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/Templates/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="~/Templates/css/icons.css" />
+    <!-- App CSS -->
+    <link rel="stylesheet" href="~/Templates/css/app.css" />
+</head>
+
+<body class="bg-register">
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+
+        <form class="row g-3" asp-action="CreateUser" asp-controller="Register" method="post">
+            <div class="col-sm-6">
+                <label class="form-label">Adınız</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Adınız">
+            </div>
+
+            <div class="col-sm-6">
+                <label class="form-label">Soyadınız</label>
+                <input type="text" class="form-control" asp-for="Surname" placeholder="Soyadınız">
+            </div>
+
+
+            <div class="col-12">
+                <label class="form-label">Kullanıcı Adınız</label>
+                <input type="text" class="form-control" asp-for="UserName" placeholder="kullanici_adi">
+            </div>
+
+
+            <div class="col-12">
+                <label class="form-label">Mail Adresiniz</label>
+                <input type="text" class="form-control" asp-for="Email" placeholder="ornek@Mail.com">
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Şifreniz</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Şifreniz" required>
+                </div>
+            </div>
+
+            <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content shadow-lg border-0 radius-15">
+                        <div class="modal-header border-bottom-0">
+                            <h5 class="modal-title fw-bold">Kullanım Şartları ve Gizlilik Politikası</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <h6 class="fw-bold">1. Hizmet Kapsamı</h6>
+                            <p>Bu uygulama, kullanıcıların e-posta işlemlerini yönetebileceği profesyonel bir platformdur. Platform yalnızca yasal amaçlarla kullanılabilir.</p>
+
+                            <h6 class="fw-bold mt-3">2. Kullanıcı Sorumlulukları</h6>
+                            <p>Kullanıcılar; spam, dolandırıcılık veya sistemi kötüye kullanım faaliyetlerinde bulunmayacağını kabul eder.</p>
+
+                            <h6 class="fw-bold mt-3">3. Veri Güvenliği</h6>
+                            <p>Şifre güvenliği tamamen kullanıcının sorumluluğundadır. Verileriniz gizlilik politikamız çerçevesinde korunmaktadır.</p>
+                        </div>
+                        <div class="modal-footer border-top-0">
+                            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Kapat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                    <label class="form-check-label" for="agreeTerms">
+                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#termsModal" class="text-primary fw-bold">Kullanım Şartlarını</a> okudum ve kabul ediyorum.
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+
+                </div>
+            </div>
+            <div asp-validation-summary="All" class="text-danger mt-2"></div><!--Uyulması gereken kurallar çiğnendiğinde devreye girmeli--!>
+        </form>
+
+    </div>
+    <!--sayfa yenilenmeden önce bir hata var mı yok mu diye bakan veya 
+    arka planda bazı kontrolleri yapan küçük kod parçacıkları genellikle bu kütüphaneye ihtiyaç duyar.-->
+    <script src="~/Templates/js/jquery.min.js"></script>
+            <script src="~/Templates/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

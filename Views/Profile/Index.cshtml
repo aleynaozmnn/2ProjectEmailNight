@@ -1,0 +1,187 @@
+﻿@using Project2_EmailNight.Dtos
+@model UserEditDto
+
+@{
+    ViewData["Title"] = "Profil Ayarlarım";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<div class="container-fluid p-4" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+    <div class="row g-4 d-flex align-items-stretch">
+
+        @* --- SOL TARAF: PROFIL ÖZETI --- *@
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm text-center p-4 h-100 d-flex flex-column" style="border-radius: 25px; min-height: 600px;">
+
+                @* --- SOL TARAF: PROFIL ÖZETI içindeki resmi bu şekilde güncelle --- *@
+                <div class="profile-img-container shadow mb-4" style="width: 140px; height: 140px; margin: 0 auto; border: 5px solid #fff;">
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/UserImages/default.png" : Model.ImageUrl)"
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; border-radius: 50%;">
+                </div>
+
+                <h3 class="fw-bold mb-1">@Model.Name @Model.Surname</h3>
+                <p class="text-muted mb-4">@Model.Email</p>
+
+                <div class="row g-2 mb-4">
+                    <div class="col-4">
+                        <div class="bg-light p-3 rounded-4 shadow-sm border-bottom border-primary border-3">
+                            <span class="fw-bold text-primary d-block fs-5">@ViewBag.InboundCount</span>
+                            <small class="text-muted fw-bold" style="font-size: 10px;">GELEN</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="bg-light p-3 rounded-4 shadow-sm border-bottom border-success border-3">
+                            <span class="fw-bold text-success d-block fs-5">@ViewBag.SentCount</span>
+                            <small class="text-muted fw-bold" style="font-size: 10px;">GİDEN</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="bg-light p-3 rounded-4 shadow-sm border-bottom border-warning border-3">
+                            <span class="fw-bold text-warning d-block fs-5">@ViewBag.DraftCount</span>
+                            <small class="text-muted fw-bold" style="font-size: 10px;">TASLAK</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-start p-4 rounded-4 mb-4 shadow-sm" style="background-color: #fcfaff; border-left: 5px solid #6a11cb;">
+                    <h6 class="fw-bold text-primary mb-2"><i class='bx bx-id-card me-2'></i> Hakkımda Bilgisi:</h6>
+                    <p class="text-dark mb-0" style="font-size: 13.5px; line-height: 1.6; font-style: italic;">
+                        "@(!string.IsNullOrEmpty(Model.Description) ? Model.Description : "Henüz bir açıklama eklenmemiş.")"
+                    </p>
+                </div>
+
+                @* BİLGİ KUTULARI (SOL PANEL) *@
+                <div class="text-start d-grid gap-3 mb-4">
+                    <div class="d-flex align-items-center p-3 rounded-4 bg-white border shadow-sm">
+                        <div class="bg-info bg-opacity-10 p-2 rounded-3 me-3">
+                            <i class='bx bx-phone-call text-info fs-4'></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fw-bold" style="font-size: 10px;">TELEFON NUMARASI</small>
+                            <span class="fw-bold text-dark fs-6">@(Model.PhoneNumber ?? "Belirtilmemiş")</span>
+                        </div>
+                    </div>
+
+                    @* SOLDAKİ ŞEHİR KUTUSU (TELEFON GİBİ GÖRÜNÜR) *@
+                    <div class="d-flex align-items-center p-3 rounded-4 bg-white border shadow-sm">
+                        <div class="bg-success bg-opacity-10 p-2 rounded-3 me-3">
+                            <i class='bx bx-map-pin text-success fs-4'></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fw-bold" style="font-size: 10px;">ŞEHİR / LOKASYON</small>
+                            <span class="fw-bold text-dark fs-6">@(Model.City ?? "Belirtilmemiş")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-auto pt-4 border-top">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted fw-bold" style="font-size: 11px;">Profil Tamamlanma Oranı</span>
+                        <span class="badge bg-primary rounded-pill">%@ViewBag.ProfileProgress</span>
+                    </div>
+                    <div class="progress shadow-sm" style="height: 10px; border-radius: 10px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                             style="width: @ViewBag.ProfileProgress%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* --- SAĞ TARAF: GÜNCELLEME FORMU --- *@
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4 p-md-5 h-100" style="border-radius: 20px;">
+                <h5 class="fw-bold mb-4 text-dark">
+                    <i class='bx bx-edit-alt text-primary me-2'></i>Profil Bilgilerini Güncelle
+                </h5>
+
+                <form asp-action="Index" method="post" enctype="multipart/form-data">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Adınız</label>
+                            <input type="text" asp-for="Name" class="form-control p-3 bg-light border-0 rounded-3 shadow-none">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Soyadınız</label>
+                            <input type="text" asp-for="Surname" class="form-control p-3 bg-light border-0 rounded-3 shadow-none">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">E-posta Adresiniz</label>
+                            <input type="email" asp-for="Email" class="form-control p-3 bg-light border-0 rounded-3 shadow-none" readonly>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Hakkımda (Kısa Biyografi)</label>
+                            <textarea asp-for="Description" class="form-control p-3 bg-light border-0 rounded-3 shadow-none" rows="3"></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Telefon Numarası</label>
+                            <input type="text" asp-for="PhoneNumber" class="form-control p-3 bg-light border-0 rounded-3 shadow-none" placeholder="05xx..." style="height: 50px;">
+                        </div>
+
+                        @* SAĞDAKİ ŞEHİR SEÇİM KUTUSU (GÜNCELLEME ALANI) *@
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Şehir / Lokasyon</label>
+                            <select asp-for="City" class="form-select p-3 bg-light border-0 rounded-3 shadow-sm"
+                                    style="height: 50px; font-size: 0.9rem; cursor: pointer;">
+                                <option value="" disabled selected>Şehir seçin</option>
+                                @if (ViewBag.Cities != null)
+                                {
+                                    foreach (var item in ViewBag.Cities)
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Yeni Profil Fotoğrafı</label>
+                            <input type="file" name="Image" class="form-control p-2 bg-white border shadow-sm rounded-3">
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div class="p-4 rounded-4" style="background-color: #fffafa; border: 1px dashed #ffccd5;">
+                                <h6 class="text-danger fw-bold mb-3"><i class='bx bx-shield-quarter me-2'></i>Güvenlik: Şifre Yenileme</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <input type="password" asp-for="Password" class="form-control border-0 shadow-sm p-3" placeholder="Yeni Şifre">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="password" asp-for="ConfirmPassword" class="form-control border-0 shadow-sm p-3" placeholder="Şifre Tekrar">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-5 py-3 fw-bold rounded-pill shadow" style="background: linear-gradient(45deg, #6a11cb, #2575fc); border: none;">
+                                Değişiklikleri Uygula
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f4f7fe !important;
+    }
+
+    .profile-img-container {
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: #eee;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background-color: #fff !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
+        border: 1px solid #6a11cb !important;
+        outline: none;
+    }
+</style>

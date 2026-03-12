@@ -1,0 +1,53 @@
+﻿@model Project2_EmailNight.Dtos.MailRequestDto
+@{
+    ViewData["Title"] = "Yeni Mesaj";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="card radius-10 border-top border-0 border-4 shadow-sm" style="border-top-color:#8833ff !important;">
+    <div class="card-body p-5">
+        <div class="card-title d-flex align-items-center">
+            <div><i class="bx bx-send me-1 font-22" style="color:#8833ff;">Yeni Mesaj Gönder</i></div>
+        </div>
+        <hr />
+        <form method="post" class="row g-3">
+            <div class="col-12">
+                <label class="form-label fw-bold">Alıcı Email</label>
+                <div class="input-group">
+                    <span slass="input-group-text bg-transparent"><i class='bx bx-use'></i></span>
+                    <input type="email" asp-for="ReceiverEmail" class="form-control border-start-0" placeholder="ornek@MailKit.com" required/>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label fw-bold">Konu</label>
+                <div class="input-group">
+                    <span slass="input-group-text bg-transparent"><i class='bx bx-higlight'></i></span>
+                    <input type="text" asp-for="Subject" class="form-control border-start-0" placeholder="Mesajınızın konusu..." required />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label fw-bold">Mesajınız</label>
+                <textarea asp-for="MessageDetail" class="form-control" rows="10" placeholder="Buraya yazın..."></textarea>
+            </div>
+
+            <div class="col-12 text-end mt-4">
+                <button type="submit" class="btn px-5 text-white shadow-sm" style="background-color:#8833ff;">
+                    <i class='bx bx-paper-plane  me-1'></i>Maili Gönder
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+<script>
+    // Buradaki 'MessageDetail' textarea'nın asp-for ismidir.
+    CKEDITOR.replace('MessageDetail');
+</script>

@@ -1,0 +1,130 @@
+﻿@model List<Project2_EmailNight.Entities.Message>
+
+@{
+    ViewData["Title"] = "Taslak Mesajlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Senin İstediğin Özel Stil */
+    .message-row {
+        transition: all 0.3s;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+
+        .message-row:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01); /* Hafif büyüme efekti */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Yumuşak gölge */
+        }
+
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+    }
+
+    /* Tablo ve Kart Düzeltmeleri */
+    .card {
+        border-radius: 15px !important;
+    }
+
+    .table thead th {
+        border: none;
+        color: #70757a;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        padding: 15px;
+    }
+</style>
+@* Kartın üstüne 4px kalınlığında mor çizgi ekleyen stil eklendi *@
+<div class="card shadow-sm border-0" style="border-radius: 15px; border-top: 4px solid #8833ff !important;">
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        @* Üst Başlık Alanı *@
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="mb-1" style="color: #333; font-weight: 700;">
+                    <i class='bx bx-edit-alt me-2 text-primary'></i>Taslaklarım
+                </h4>
+                <p class="text-muted small mb-0">Yarım kalan veya düzenlenmeyi bekleyen mesajlarınız.</p>
+            </div>
+            <div class="bg-light p-2 radius-10">
+                <span class="badge bg-primary rounded-pill">@Model.Count() Adet</span>
+            </div>
+        </div>
+
+        @* Tablo Alanı *@
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="border-collapse: separate; border-spacing: 0 5px;">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Alıcı</th>
+                        <th style="width: 40%;">Konu</th>
+                        <th style="width: 15%;">Tarih</th>
+                        <th style="width: 10%;">Durum</th>
+                        <th style="width: 10%;" class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="message-row">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-2 bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                        <i class='bx bx-user text-secondary'></i>
+                                    </div>
+                                    <span style="color: #4e4e4e; font-size: 0.9rem;">@item.ReceiverEmail</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="fw-bold text-dark" style="font-size: 0.9rem;">@item.Subject</span>
+                            </td>
+                            <td class="small text-muted">
+                                @item.SendDate.ToString("dd MMM yyyy HH:mm")
+                            </td>
+                            <td>
+                                <span class="badge" style="background-color: #f0e6ff; color: #8833ff; font-weight: 500; padding: 6px 12px;">
+                                    Taslak
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/Message/EditDraft/@item.MessageId" class="btn btn-primary btn-action" title="Düzenle">
+                                        <i class='bx bx-paper-plane'></i>
+                                    </a>
+                                    <a href="/Message/DeleteMessage/@item.MessageId"
+                                       onclick="return confirm('Bu taslağı silmek istediğinize emin misiniz?')"
+                                       class="btn btn-outline-danger btn-action" title="Sil">
+                                        <i class='bx bx-trash'></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="py-4">
+                                    <i class='bx bx-file-blank text-light' style="font-size: 4rem;"></i>
+                                    <h6 class="text-muted mt-3">Henüz kaydedilmiş bir taslağınız bulunmuyor.</h6>
+                                    <a href="/Message/NewMessage" class="btn btn-primary btn-sm mt-2 radius-30">Yeni Mesaj Oluştur</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

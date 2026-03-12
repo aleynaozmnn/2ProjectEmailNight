@@ -1,0 +1,100 @@
+﻿@model List<Project2_EmailNight.Entities.Message>
+@{
+    ViewData["Title"] = "Yıldızlı Mesajlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card radius-10 border-top border-0 border-4 shadow-sm" style="border-top-color: #ffc107 !important; border-radius: 15px;">
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+            <div>
+                <h5 class="mb-0 text-warning fw-bold"><i class='bx bxs-star me-2'></i>Yıldızlı Mesajlar</h5>
+                <p class="text-muted small mb-0">Önemli olarak işaretlediğiniz tüm mesajlar burada listelenir.</p>
+            </div>
+        </div>
+        <hr />
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th style="width: 50px;">Yıldız</th>
+                        <th>Gönderici</th>
+                        <th>Konu</th>
+                        <th>Tarih</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        @* Layout'taki efekti tetikleyen sınıf *@
+                        <tr class="message-row">
+                            <td><span class="text-muted">@item.MessageId</span></td>
+                            <td>
+                                <a href="/Message/ChangeStarStatus/@item.MessageId?returnUrl=StarredMessages">
+                                    <i class='bx bxs-star text-warning' style="font-size: 1.2rem;"></i>
+                                </a>
+                            </td>
+                            <td><span class="fw-bold text-dark">@item.SenderEmail</span></td>
+                            <td><span class="text-secondary">@item.Subject</span></td>
+                            <td><small class="text-muted">@item.SendDate.ToString("dd MMM yyyy")</small></td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    @* Detay Butonu (Gelen kutusundaki Zarfın aynısı) *@
+                                    <a href="/Message/MessageDetail/@item.MessageId"
+                                       class="btn btn-primary"
+                                       style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius: 8px;"
+                                       title="Detayı Gör">
+                                        <i class='bx bx-envelope-open'></i>
+                                    </a>
+
+                                    @* Silme Butonu (Gelen kutusundaki Çöp Kovasının aynısı) *@
+                                    <a href="/Message/DeleteMessage/@item.MessageId"
+                                       onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?')"
+                                       class="btn btn-outline-danger"
+                                       style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius: 8px;"
+                                       title="Sil">
+                                        <i class='bx bx-trash'></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class='bx bx-star d-block mb-2' style="font-size: 2rem; opacity: 0.3;"></i>
+                                Henüz yıldızlı bir mesajınız bulunmuyor.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style>
+    .message-row {
+        transition: all 0.3s;
+        border-radius: 10px;
+        margin-bottom: 5px;
+    }
+
+        .message-row:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
