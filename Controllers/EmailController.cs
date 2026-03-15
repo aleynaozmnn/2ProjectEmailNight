@@ -40,7 +40,7 @@ namespace Project2_EmailNight.Controllers
             
             SmtpClient smtpClient = new SmtpClient();//SmtpClient:
             smtpClient.Connect("smtp.gmail.com",587,false);//587:türkiye port no
-            smtpClient.Authenticate("aleynaozmenn629@gmail.com", "n m z u k f k c d r p e p a i n");
+            smtpClient.Authenticate("aleynaozmenn629@gmail.com", "Buraya şifreniz gelecek (google şifresi)");
             smtpClient.Send(mimeMessage);
             smtpClient.Disconnect(true);
 
